@@ -1,0 +1,23 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="tigren_dailydeals_deal_listing_data_source" xsi:type="string">DailyDealsVirtualType</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="DailyDealsVirtualType" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">tigren_daily_deals</argument>
+            <argument name="resourceModel" xsi:type="string">Tigren\DailyDeals\Model\ResourceModel\Deals</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="cache_price" type="Tigren\DailyDeals\Plugin\Product" sortOrder="1" />
+    </type>
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="change_add_to_cart"
+                type="Tigren\DailyDeals\Plugin\Model\Checkout\Cart\AddCart"
+        />
+    </type>
+</config>
