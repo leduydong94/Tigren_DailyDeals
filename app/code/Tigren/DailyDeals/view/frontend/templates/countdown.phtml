@@ -1,0 +1,58 @@
+<?php
+$sku = $block->GetCurrentSku()->getSku();
+$endTime = $block->GetDataBySku($sku, 'end_date_time');
+$startTime = $block->GetDataBySku($sku, 'start_date_time');
+//var_dump($endTime . "-" . $startTime);
+//exit;
+?>
+<div id="flash-sale" style="text-align: center; float: left">
+    <h2 id="sale" style="font-weight: bold; color: red"></h2>
+    <h1 id="time"></h1>
+</div>
+<script>
+    var start = new Date('<?php echo $startTime ?>').getTime();
+    var end = new Date('<?php echo $endTime ?>').getTime();
+
+    function countdown() {
+        if(!isNaN(end)) {
+            var now = new Date().getTime();
+
+            comingTime = start - now;
+            saleTime = end - now;
+
+            var second = 1000;
+            var minute = second * 60;
+            var hour = minute * 60;
+            var day = hour * 24;
+            var saleDays = Math.floor(saleTime / (day));
+            var comingDays = Math.floor(comingTime / (day));
+
+            var saleHours = Math.floor((saleTime % (day)) / (hour));
+            var comingHours = Math.floor((comingTime % (day)) / (hour));
+
+            var saleMinutes = Math.floor((saleTime % (hour)) / (minute));
+            var comingMinutes = Math.floor((comingTime % (hour)) / (minute));
+
+            var saleSeconds = Math.floor((saleTime % (minute)) / second);
+            var comingSeconds = Math.floor((comingTime % (minute)) / second);
+
+            if (comingTime <= 21600000 && comingTime > 0) {
+                var comeTime = comingDays + "d:" + comingHours + "h:" + comingMinutes + "m:" + comingSeconds + "s";
+                document.getElementById("sale").innerHTML = "Sale Off Coming Soon:";
+                document.getElementById("time").innerHTML = comeTime;
+            } else if (saleTime > 0 && comingTime <= 0) {
+                var time = saleDays + "d:" + saleHours + "h:" + saleMinutes + "m:" + saleSeconds + "s";
+                document.getElementById("sale").innerHTML = "Limited Time Remaining:";
+                document.getElementById("time").innerHTML = time;
+            } else if (saleTime <= 0){
+                document.getElementById("sale").innerHTML = "Limited Time Remaining:";
+                document.getElementById("time").innerHTML = "0d:0h:0m:0s";
+            }
+        }
+    }
+
+    setInterval(function () {
+        countdown();
+    }, 1000)
+
+</script>

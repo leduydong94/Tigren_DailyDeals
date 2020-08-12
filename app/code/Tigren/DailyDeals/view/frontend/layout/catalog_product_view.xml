@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <referenceContainer name="product.info.social">
+        <block class="Tigren\DailyDeals\Block\Frontend\Countdown" name="countdown" template="Tigren_DailyDeals::countdown.phtml" ifconfig="dailydeals_section_id/general/enable"/>
+    </referenceContainer>
+</page>
