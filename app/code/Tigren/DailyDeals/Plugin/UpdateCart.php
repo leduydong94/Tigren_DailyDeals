@@ -5,6 +5,7 @@ namespace Tigren\DailyDeals\Plugin;
 
 use Magento\Framework\Exception\LocalizedException;
 use Tigren\DailyDeals\Model\ResourceModel\Deals\CollectionFactory as DealCollection;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 /**
  * Class afterUpdateItems
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -12,14 +13,20 @@ use Tigren\DailyDeals\Model\ResourceModel\Deals\CollectionFactory as DealCollect
 class UpdateCart
 {
     protected $_dealCollection;
+    protected $_scopeConfig;
 
-    function __construct(DealCollection $dealCollection)
+    function __construct(
+        DealCollection $dealCollection,
+        ScopeConfigInterface $scopeConfig
+    )
     {
         $this->_dealCollection = $dealCollection;
+        $this->_scopeConfig = $scopeConfig;
     }
 
     public function afterUpdateItems($subject, $result, $data)
     {
+        $config = $this->_scopeConfig->getValue('dailydeals_section_id/general/enable');
         $deals = $this->_dealCollection->create();
         $dealSku = [];
         foreach ($deals as $deal) {
@@ -31,8 +38,13 @@ class UpdateCart
             $itemSku = $item['sku'];
             $newQty = $itemInfo['qty'];
             if (in_array($itemSku, $dealSku)) {
+                date_default_timezone_set('Asia/Ho_Chi_Minh');
+                $endTime = $deal->getItemByColumnValue('product_sku', $productSku)->getData('end_date_time');
+                $startTime = $deal->getItemByColumnValue('product_sku', $productSku)->getData('start_date_time');
+                $now = date('Y-m-d H:i:s');
+                $status = $deal->getItemByColumnValue('product_sku', $productSku)->getData('status');
                 $dealQty = $deals->getItemByColumnValue('product_sku', $itemSku)->getData('deal_qty');
-                if ($newQty > $dealQty) {
+                if ($now <= $endTime && $status == 1 && $now >= $startTime && $config != 0 && $newQty > $dealQty) {
                     throw new LocalizedException(__('You can not add more than deal quantity'));
                 } else {
                     $item->setQty($newQty);
