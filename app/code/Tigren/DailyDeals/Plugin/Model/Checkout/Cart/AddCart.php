@@ -42,6 +42,8 @@ class AddCart
         }
 
         if (in_array($productSku, $dealSku)) {
+            date_default_timezone_set('Asia/Ho_Chi_Minh');
+
             $dealQty = $deals->getItemByColumnValue('product_sku', $productSku)->getData('deal_qty');
             $startTime = $deals->getItemByColumnValue('product_sku', $productSku)->getData('start_date_time');
             $endTime = $deals->getItemByColumnValue('product_sku', $productSku)->getData('end_date_time');
@@ -50,13 +52,14 @@ class AddCart
 
             $items = $subject->getQuote()->getAllItems();
             $productQty = 0;
+
             foreach ($items as $item) {
                 $product = array(
                     'sku' => $item->getSku(),
                     'quantity' => $item->getQty()
                 );
                 if ($product['sku'] == $productSku) {
-                    $productQty += $product['quantity'];
+                    $productQty = $product['quantity'];
                 }
             }
 
