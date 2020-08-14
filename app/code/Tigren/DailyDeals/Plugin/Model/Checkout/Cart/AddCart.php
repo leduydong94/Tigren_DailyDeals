@@ -34,7 +34,12 @@ class AddCart
             $dealSku[] = $deal->getData('product_sku');
         }
         $productSku = $productInfo->getSku();
-        $addQty = $requestInfo['qty']; //get qty before add to cart
+
+        if (isset($requestInfo['qty'])) {
+            $addQty = $requestInfo['qty'];//get qty before add to cart
+        } else {
+            $addQty = 1;
+        }
 
         if (in_array($productSku, $dealSku)) {
             $dealQty = $deals->getItemByColumnValue('product_sku', $productSku)->getData('deal_qty');
@@ -46,14 +51,15 @@ class AddCart
             $items = $subject->getQuote()->getAllItems();
             $productQty = 0;
             foreach ($items as $item) {
-                $product = array (
+                $product = array(
                     'sku' => $item->getSku(),
                     'quantity' => $item->getQty()
                 );
-                if ($product['sku']==$productSku) {
+                if ($product['sku'] == $productSku) {
                     $productQty += $product['quantity'];
                 }
             }
+
             if ($now <= $endTime && $status == 1 && $now >= $startTime && $config != 0
                 && ($productQty + $addQty) > $dealQty) {
                 throw new LocalizedException(__('Deal Quantity Limited'));
