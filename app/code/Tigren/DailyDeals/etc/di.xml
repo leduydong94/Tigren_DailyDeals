@@ -12,12 +12,18 @@
             <argument name="resourceModel" xsi:type="string">Tigren\DailyDeals\Model\ResourceModel\Deals</argument>
         </arguments>
     </virtualType>
+
     <type name="Magento\Catalog\Model\Product">
-        <plugin name="cache_price" type="Tigren\DailyDeals\Plugin\Product" sortOrder="1" />
+        <plugin name="cache_price" type="Tigren\DailyDeals\Plugin\Product" sortOrder="1" disabled="false" />
     </type>
+
     <type name="Magento\Checkout\Model\Cart">
         <plugin name="change_add_to_cart"
-                type="Tigren\DailyDeals\Plugin\Model\Checkout\Cart\AddCart"
+                type="Tigren\DailyDeals\Plugin\Model\Checkout\Cart\AddCart" sortOrder="5" disabled="false"
         />
+    </type>
+
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="update_cart" type="Tigren\DailyDeals\Plugin\UpdateCart" sortOrder="10" disabled="false"  />
     </type>
 </config>
