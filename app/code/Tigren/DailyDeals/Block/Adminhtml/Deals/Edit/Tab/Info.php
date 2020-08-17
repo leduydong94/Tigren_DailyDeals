@@ -22,7 +22,7 @@ class Info extends Generic implements TabInterface
 // protected $_wysiwygConfig;
 
     /**
-     * @var \Magetop\Helloworld\Model\System\Config\Status
+     * @var Tigren\DailyDeals\Model\System\Config\Status
      */
     protected $_status;
     protected $_product;
@@ -41,18 +41,14 @@ class Info extends Generic implements TabInterface
         Context $context,
         Registry $registry,
         FormFactory $formFactory,
-// Config $wysiwygConfig,
         Status $status,
         Product $product,
-//        Store $store,
         Store $systemStore,
         array $data = []
     )
     {
-// $this->_wysiwygConfig = $wysiwygConfig;
         $this->_status = $status;
         $this->_product = $product;
-//        $this->_store = $store;
         $this->_systemStore = $systemStore;
         parent::__construct($context, $registry, $formFactory, $data);
     }
@@ -64,7 +60,7 @@ class Info extends Generic implements TabInterface
      */
     protected function _prepareForm()
     {
-        /** @var $model \Magetop\Helloworld\Model\PostsFactory */
+        /** @var $model \Tigren\DailyDeals\Model\DealsFactory */
         $model = $this->_coreRegistry->registry('tigren_daily_deals');
         /** @var \Magento\Framework\Data\Form $form */
         $form = $this->_formFactory->create();
@@ -169,7 +165,7 @@ class Info extends Generic implements TabInterface
      */
     public function getTabLabel()
     {
-        return __('Posts Info');
+        return __('Deals Info');
     }
 
     /**
@@ -179,7 +175,7 @@ class Info extends Generic implements TabInterface
      */
     public function getTabTitle()
     {
-        return __('Posts Info');
+        return __('Deals Info');
     }
 
     /**
