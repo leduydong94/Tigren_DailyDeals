@@ -4,22 +4,20 @@ namespace Tigren\DailyDeals\Observer;
 use Magento\Checkout\Model\Cart;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Tigren\DailyDeals\Model\ResourceModel\Deals\CollectionFactory as DealCollection;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\Registry;
 
 class CheckShoppingCart implements ObserverInterface
 {
     protected $cart;
     protected $dealCollection;
     protected $_scopeConfig;
-    protected $_registry;
     protected $_product;
 
     public function __construct(
         DealCollection $dealCollection,
         ScopeConfigInterface $scopeConfig,
-        Registry $registry,
         \Magento\Catalog\Model\ProductFactory $productFactory,
         Cart $cart
     )
@@ -27,7 +25,6 @@ class CheckShoppingCart implements ObserverInterface
         $this->dealCollection = $dealCollection;
         $this->cart = $cart;
         $this->_scopeConfig = $scopeConfig;
-        $this->_registry = $registry;
         $this->productFactory = $productFactory;
     }
 
@@ -63,6 +60,7 @@ class CheckShoppingCart implements ObserverInterface
                     $item->setCustomPrice($dealPrice);
                     $item->setOriginalCustomPrice($dealPrice);
                 }
+
                 $item->getProduct()->setIsSuperMode(true);
                 $item->save();
             }
