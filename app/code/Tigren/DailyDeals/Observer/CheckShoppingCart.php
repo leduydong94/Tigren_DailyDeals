@@ -51,7 +51,7 @@ class CheckShoppingCart implements ObserverInterface
             if (in_array($itemSku, $dealSku)) {
                 date_default_timezone_set('Asia/Ho_Chi_Minh');
                 $endTime = $deals->getItemByColumnValue('product_sku', $itemSku)->getData('end_date_time');
-                $startTime = $deals->getItemByColumnValue('product_sku', $itemSku)->getData('start_date_time');
+//                $startTime = $deals->getItemByColumnValue('product_sku', $itemSku)->getData('start_date_time');
                 $now = date('Y-m-d H:i:s');
                 $status = $deals->getItemByColumnValue('product_sku', $itemSku)->getData('status');
                 $dealPrice = $deals->getItemByColumnValue('product_sku', $itemSku)->getData('deal_price');
