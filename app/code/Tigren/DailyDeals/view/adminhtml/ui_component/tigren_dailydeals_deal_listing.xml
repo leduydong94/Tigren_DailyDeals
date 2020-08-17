@@ -28,11 +28,6 @@
         <exportButton name="export_button"/>
 
         <massaction name="listing_massaction">
-            <!--            <argument name="data" xsi:type="array">-->
-            <!--                <item name="config" xsi:type="array">-->
-            <!--                    <item name="component" xsi:type="string">Magento_Ui/js/grid/tree-massactions</item>-->
-            <!--                </item>-->
-            <!--            </argument>-->
             <action name="delete">
                 <argument name="data" xsi:type="array">
                     <item name="config" xsi:type="array">
@@ -170,17 +165,6 @@
             </argument>
 <!--            eleTMp-->
         </column>
-<!--        <column name="store_view" class="Tigren\DailyDeals\Ui\Component\Listing\Column\Store">-->
-<!--            <argument name="data" xsi:type="array">-->
-<!--                <item name="config" xsi:type="array">-->
-<!--                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>-->
-<!--                    <item name="align" xsi:type="string">left</item>-->
-<!--                    <item name="sortable" xsi:type="boolean">false</item>-->
-<!--                    <item name="label" xsi:type="string" translate="true">Store View</item>-->
-<!--                    <item name="sortOrder" xsi:type="number">60</item>-->
-<!--                </item>-->
-<!--            </argument>-->
-<!--        </column>-->
         <actionsColumn name="actions" class="Tigren\DailyDeals\Ui\Component\Listing\Column\Actions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
