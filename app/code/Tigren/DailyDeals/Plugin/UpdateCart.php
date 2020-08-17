@@ -39,12 +39,13 @@ class UpdateCart
             $newQty = $itemInfo['qty'];
             if (in_array($itemSku, $dealSku)) {
                 date_default_timezone_set('Asia/Ho_Chi_Minh');
-                $endTime = $deal->getItemByColumnValue('product_sku', $productSku)->getData('end_date_time');
-                $startTime = $deal->getItemByColumnValue('product_sku', $productSku)->getData('start_date_time');
+                $endTime = $deals->getItemByColumnValue('product_sku', $itemSku)->getData('end_date_time');
+                $startTime = $deals->getItemByColumnValue('product_sku', $itemSku)->getData('start_date_time');
                 $now = date('Y-m-d H:i:s');
-                $status = $deal->getItemByColumnValue('product_sku', $productSku)->getData('status');
+                $status = $deals->getItemByColumnValue('product_sku', $itemSku)->getData('status');
                 $dealQty = $deals->getItemByColumnValue('product_sku', $itemSku)->getData('deal_qty');
                 if ($now <= $endTime && $status == 1 && $now >= $startTime && $config != 0 && $newQty > $dealQty) {
+//                if ($newQty > $dealQty) {
                     throw new LocalizedException(__('You can not add more than deal quantity'));
                 } else {
                     $item->setQty($newQty);
