@@ -1,6 +1,7 @@
 <?php
 namespace Tigren\DailyDeals\Setup;
 
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\UpgradeSchemaInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
@@ -30,11 +31,11 @@ class UpgradeSchema implements UpgradeSchemaInterface
                         'ID'
                     )
                     ->addColumn(
-                        'product_id',
+                        'product_sku',
                         \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                         255,
                         ['nullable => false'],
-                        'Product ID'
+                        'Product SKU'
                     )
                     ->addColumn(
                         'status',
@@ -44,30 +45,17 @@ class UpgradeSchema implements UpgradeSchemaInterface
                         'Status'
                     )
                     ->addColumn(
-                        'start_date',
+                        'start_date_time',
                         \Magento\Framework\DB\Ddl\Table::TYPE_DATE,
                         null,
                         [],
-                        'Start Date'
-                    )
-                    ->addColumn(
-                        'start_time',
-                        \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
-                        null,
-                        ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
-                        'Start Time'
+                        'Start Date Time'
                     )->addColumn(
-                        'end_date',
+                        'end_date_time',
                         \Magento\Framework\DB\Ddl\Table::TYPE_DATE,
                         null,
                         [],
-                        'End Date'
-                    )->addColumn(
-                        'end_time',
-                        \Magento\Framework\DB\Ddl\Table::TYPE_TIMESTAMP,
-                        null,
-                        ['nullable' => false, 'default' => \Magento\Framework\DB\Ddl\Table::TIMESTAMP_INIT],
-                        'End Time'
+                        'End Date Time'
                     )->addColumn(
                         'deal_price',
                         \Magento\Framework\DB\Ddl\Table::TYPE_FLOAT,
@@ -80,6 +68,12 @@ class UpgradeSchema implements UpgradeSchemaInterface
                         4,
                         [],
                         'Deal Quantity'
+                    )->addColumn(
+                        'store_view',
+                        Table::TYPE_INTEGER,
+                        1,
+                        [],
+                        'Store View'
                     )->setComment('Daily Deals Table');
                 $installer->getConnection()->createTable($table);
 
@@ -87,10 +81,10 @@ class UpgradeSchema implements UpgradeSchemaInterface
                     $installer->getTable('tigren_daily_deals'),
                     $setup->getIdxName(
                         $installer->getTable('tigren_daily_deals'),
-                        ['product_name','status','start_date','start_time','end_date','end_time','deal_price','deal_qty'],
+                        ['product_sku','status','start_date_time','end_date_time','deal_price','deal_qty', 'store_view'],
                         \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
                     ),
-                    ['product_name','status','start_date','start_time','end_date','end_time','deal_price','deal_qty'],
+                    ['product_sku','status','start_date_time','end_date_time','deal_price','deal_qty', 'store_view'],
                     \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
                 );
             }
