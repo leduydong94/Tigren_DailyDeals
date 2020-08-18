@@ -5,54 +5,115 @@ $startTime = $block->GetDataBySku($sku, 'start_date_time');
 //var_dump($endTime . "-" . $startTime);
 //exit;
 ?>
-<div id="flash-sale" style="text-align: center; float: left">
-    <h2 id="sale" style="font-weight: bold; color: red"></h2>
-    <h1 id="time"></h1>
-</div>
-<script>
-    var start = new Date('<?php echo $startTime ?>').getTime();
-    var end = new Date('<?php echo $endTime ?>').getTime();
 
-    function countdown() {
-        if(!isNaN(end)) {
-            var now = new Date().getTime();
-
-            comingTime = start - now;
-            saleTime = end - now;
-
-            var second = 1000;
-            var minute = second * 60;
-            var hour = minute * 60;
-            var day = hour * 24;
-            var saleDays = Math.floor(saleTime / (day));
-            var comingDays = Math.floor(comingTime / (day));
-
-            var saleHours = Math.floor((saleTime % (day)) / (hour));
-            var comingHours = Math.floor((comingTime % (day)) / (hour));
-
-            var saleMinutes = Math.floor((saleTime % (hour)) / (minute));
-            var comingMinutes = Math.floor((comingTime % (hour)) / (minute));
-
-            var saleSeconds = Math.floor((saleTime % (minute)) / second);
-            var comingSeconds = Math.floor((comingTime % (minute)) / second);
-
-            if (comingTime <= 21600000 && comingTime > 0) {
-                var comeTime = comingDays + "d:" + comingHours + "h:" + comingMinutes + "m:" + comingSeconds + "s";
-                document.getElementById("sale").innerHTML = "Sale Off Coming Soon:";
-                document.getElementById("time").innerHTML = comeTime;
-            } else if (saleTime > 0 && comingTime <= 0) {
-                var time = saleDays + "d:" + saleHours + "h:" + saleMinutes + "m:" + saleSeconds + "s";
-                document.getElementById("sale").innerHTML = "Limited Time Remaining:";
-                document.getElementById("time").innerHTML = time;
-            } else if (saleTime <= 0){
-                document.getElementById("sale").innerHTML = "Limited Time Remaining:";
-                document.getElementById("time").innerHTML = "0d:0h:0m:0s";
-            }
-        }
+<style>
+    #clockdiv{
+        font-family: sans-serif;
+        color: #fff;
+        display: inline-block;
+        font-weight: 100;
+        text-align: center;
+        font-size: 30px;
     }
 
-    setInterval(function () {
-        countdown();
-    }, 1000)
+    #clockdiv > div{
+        padding: 10px;
+        border-radius: 3px;
+        background: #00BF96;
+        display: inline-block;
+    }
 
+    #clockdiv div > span{
+        padding: 15px;
+        border-radius: 3px;
+        background: #00816A;
+        display: inline-block;
+    }
+
+    .smalltext{
+        padding-top: 5px;
+        font-size: 16px;
+    }
+</style>
+
+<h2 id="sale"></h2>
+<div id="clockdiv">
+    <div>
+        <span class="days"></span>
+        <div class="smalltext">Days</div>
+    </div>
+    <div>
+        <span class="hours"></span>
+        <div class="smalltext">Hours</div>
+    </div>
+    <div>
+        <span class="minutes"></span>
+        <div class="smalltext">Minutes</div>
+    </div>
+    <div>
+        <span class="seconds"></span>
+        <div class="smalltext">Seconds</div>
+    </div>
+</div>
+
+<script>
+    const start = new Date('<?php echo $startTime ?>').getTime();
+    const end = new Date('<?php echo $endTime ?>').getTime();
+    const now = new Date().getTime();
+
+    comingTime = start - now;
+    saleTime = end - now;
+
+    function getTimeRemaining(endtime) {
+        const total = Date.parse(endtime) - Date.parse(new Date());
+        const seconds = Math.floor((total / 1000) % 60);
+        const minutes = Math.floor((total / 1000 / 60) % 60);
+        const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+        const days = Math.floor(total / (1000 * 60 * 60 * 24));
+
+        return {
+            total,
+            days,
+            hours,
+            minutes,
+            seconds
+        };
+    }
+
+    function initializeClock(id, endtime) {
+        const clock = document.getElementById(id);
+        const daysSpan = clock.querySelector('.days');
+        const hoursSpan = clock.querySelector('.hours');
+        const minutesSpan = clock.querySelector('.minutes');
+        const secondsSpan = clock.querySelector('.seconds');
+
+        function updateClock() {
+            const t = getTimeRemaining(endtime);
+            if (!isNaN(end) && comingTime <= 21600000 && saleTime >= -3600000) {
+                daysSpan.innerHTML = t.days;
+                hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+                minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+                secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+                if (t.total <= 0) {
+                    clearInterval(timeinterval);
+                }
+            } else {
+                document.getElementById("clockdiv").remove();
+                document.getElementById("sale").remove();
+            }
+        }
+
+            updateClock();
+            const timeinterval = setInterval(updateClock, 1000);
+        }
+
+    if (comingTime > 0) {
+        var deadline = new Date('<?php echo $startTime ?>');
+        document.getElementById("sale").innerHTML = "Sale Off Coming Soon:";
+    } else if (saleTime > 0 && comingTime <= 0) {
+        var deadline = new Date('<?php echo $endTime ?>');
+        document.getElementById("sale").innerHTML = "Limited Time Remaining:";
+    }
+    initializeClock('clockdiv', deadline);
 </script>
