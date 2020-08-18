@@ -3,4 +3,7 @@
     <event name="controller_action_predispatch_checkout_index_index">
         <observer name="checkcout_page" instance="Tigren\DailyDeals\Observer\CheckShoppingCart" />
     </event>
+    <event name="sales_order_place_after">
+        <observer name="checkcout_success" instance="Tigren\DailyDeals\Observer\AfterCheckout" />
+    </event>
 </config>
