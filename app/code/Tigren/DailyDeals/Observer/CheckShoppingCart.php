@@ -4,7 +4,6 @@ namespace Tigren\DailyDeals\Observer;
 use Magento\Checkout\Model\Cart;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Exception\LocalizedException;
 use Tigren\DailyDeals\Model\ResourceModel\Deals\CollectionFactory as DealCollection;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 
