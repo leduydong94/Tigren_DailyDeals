@@ -114,6 +114,8 @@ $startTime = $block->GetDataBySku($sku, 'start_date_time');
     } else if (saleTime > 0 && comingTime <= 0) {
         var deadline = new Date('<?php echo $endTime ?>');
         document.getElementById("sale").innerHTML = "Limited Time Remaining:";
+    } else {
+        document.getElementById("sale").innerHTML = "Time Out!";
     }
     initializeClock('clockdiv', deadline);
 </script>
