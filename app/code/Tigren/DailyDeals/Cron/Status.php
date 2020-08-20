@@ -34,5 +34,6 @@ class Status
                $deal->save();
            }
        }
+        return $this;
     }
 }
